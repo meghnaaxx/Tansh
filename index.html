@@ -35,6 +35,23 @@
 
   .stage{position:relative;width:100%;max-width:100%;height:100vh;max-height:100vh;}
 
+  /* CUTE CHASE BUBBLES */
+  .chase-bubbles{position:fixed;inset:0;pointer-events:none;z-index:1;}
+  .bubble{
+    position:absolute;width:20px;height:20px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,215,0,0.9), rgba(255,237,160,0.6));
+    animation:bubbleChase 8s infinite linear;
+    box-shadow:0 0 15px rgba(255,215,0,0.8);
+    will-change:transform;
+  }
+  .bubble:nth-child(1){left:-20px;top:20%;animation-delay:0s;}
+  .bubble:nth-child(2){left:-20px;top:40%;animation-delay:1s;}
+  .bubble:nth-child(3){left:-20px;top:60%;animation-delay:2s;}
+  .bubble:nth-child(4){left:-20px;top:80%;animation-delay:3s;}
+  .bubble:nth-child(5){right:-20px;top:10%;animation:reverseBubbleChase 8s infinite linear;animation-delay:0.5s;}
+  .bubble:nth-child(6){right:-20px;top:30%;animation:reverseBubbleChase 8s infinite linear;animation-delay:1.5s;}
+  .bubble:nth-child(7){right:-20px;top:70%;animation:reverseBubbleChase 8s infinite linear;animation-delay:2.5s;}
+
   /* COMPACT MOBILE ORB */
   .elegant-orb{
     position:absolute;top:50%;left:50%;
@@ -54,6 +71,7 @@
     text-align:center;color:#f8f9ff;
     opacity:0;
     will-change:transform,opacity;
+    z-index:10;
   }
 
   .elegant-orb.show{
@@ -85,12 +103,22 @@
     animation:exoticSubtitleReveal 2.5s cubic-bezier(0.23,1,0.32,1.2) infinite;
   }
 
+  /* CUTE HEARTS FLOATING */
+  .heart-float{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;}
+  .heart{
+    position:absolute;font-size:clamp(16px,4vw,24px);
+    color:#ff69b4;animation:heartFloat 6s infinite ease-in-out;
+    filter:drop-shadow(0 0 10px rgba(255,105,180,0.8));
+    will-change:transform,opacity;
+  }
+
   /* COMPACT LOADING */
   .smooth-loading{
     position:absolute;top:50%;left:50%;
     transform:translate(-50%,-50%) scale(0);opacity:0;
     width:85vw;max-width:400px;display:flex;flex-direction:column;align-items:center;
     will-change:transform,opacity;
+    z-index:10;
   }
   .smooth-loading.show{animation:cosmicLoadingRise 1.6s ease-out forwards;}
 
@@ -100,7 +128,7 @@
     background:conic-gradient(from 0deg, #ffd700, #ffed4e);
     border-radius:50%;
     box-shadow:0 0 20px rgba(255,215,0,0.9), inset 0 0 8px rgba(255,255,255,0.3);
-    animation:exoticGemOrbit 2s infinite ease-in-out;
+    animation:exoticGemOrbit 2s infinite ease-in-out, gemWiggle 3s infinite;
     will-change:transform;
   }
   .gem:nth-child(2){animation-delay:-0.25s;}
@@ -111,7 +139,7 @@
     font-size:clamp(18px, 4.5vw, 22px);font-weight:600;color:#ffd700;
     letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;
     text-shadow:0 0 25px rgba(255,215,0,0.8);
-    animation:exoticTextFloat 3s ease-in-out infinite;
+    animation:exoticTextFloat 3s ease-in-out infinite, textBounce 2s infinite;
     text-align:center;
   }
 
@@ -121,7 +149,7 @@
     background-size:400% 400%;
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     text-shadow:0 0 30px rgba(255,107,107,0.8);
-    animation:exoticCountdownPulse 1.3s infinite;letter-spacing:1px;
+    animation:exoticCountdownPulse 1.3s infinite, countdownWobble 1.5s infinite;letter-spacing:1px;
     will-change:transform;
   }
 
@@ -132,15 +160,17 @@
     width:90vw;max-width:700px;height:220px;
     display:flex;align-items:center;justify-content:center;gap:25px;
     will-change:transform,opacity;
+    z-index:10;
   }
   .drum-section.show{animation:exoticDrumRise 1.6s cubic-bezier(0.23,1,0.32,1.3) forwards;}
 
   .drum{font-size:clamp(110px, 22vw, 180px);
     filter:drop-shadow(0 12px 30px rgba(255,215,0,0.8));
+    animation:drumShake 0.1s infinite;
     will-change:transform;
   }
-  .drum.left{animation:exoticDrumHitLeft 1s infinite;}
-  .drum.right{animation:exoticDrumHitRight 1s infinite 0.08s;}
+  .drum.left{animation:exoticDrumHitLeft 1s infinite, drumShake 0.1s infinite;}
+  .drum.right{animation:exoticDrumHitRight 1s infinite 0.08s, drumShake 0.1s infinite 0.04s;}
 
   .drumroll-text{
     font-family:'Playfair Display', serif;font-size:clamp(24px, 6vw, 40px);font-weight:700;
@@ -149,7 +179,7 @@
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     letter-spacing:4px;text-transform:uppercase;
     text-shadow:0 0 30px rgba(255,215,0,0.8);
-    animation:exoticTextSweep 2s linear infinite;
+    animation:exoticTextSweep 2s linear infinite, textSquish 2s infinite;
     white-space:nowrap;
   }
 
@@ -180,13 +210,22 @@
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     letter-spacing:1px;
     text-shadow:0 12px 40px rgba(255,215,0,0.9);
-    animation:celestialTitleSweep 3.5s linear infinite;
+    animation:celestialTitleSweep 3.5s linear infinite, titleCelebrate 2s infinite;
   }
   .popup-subtitle{
     font-size:clamp(14px, 3.5vw, 20px);font-weight:500;color:rgba(248,249,255,0.95);
     line-height:1.4;letter-spacing:0.5px;max-width:95%;
     text-shadow:0 6px 25px rgba(255,215,0,0.8);
     animation:exoticTextFloat 4s ease-in-out infinite;
+  }
+
+  /* CUTE STAR CHASE */
+  .star-chase{position:fixed;inset:0;pointer-events:none;z-index:15;}
+  .star{
+    position:absolute;font-size:20px;color:#ffd700;
+    animation:starChase 4s infinite linear;
+    filter:drop-shadow(0 0 10px #ffd700);
+    will-change:transform;
   }
 
   /* COMPACT CLAP EXPLOSION */
@@ -200,7 +239,7 @@
   .clap-section.show{animation:exoticClapExplosion 2s ease-out forwards;}
   
   .clap-emoji{
-    font-size:clamp(48px, 14vw, 72px);animation:exoticClapEpic 0.8s infinite ease-in-out;
+    font-size:clamp(48px, 14vw, 72px);animation:exoticClapEpic 0.8s infinite ease-in-out, clapBounce 1.2s infinite;
     filter:drop-shadow(0 0 25px rgba(255,215,0,1));
     will-change:transform;
   }
@@ -210,7 +249,8 @@
   .sparkle{
     position:absolute;width:16px;height:16px;border-radius:50%;
     background:linear-gradient(45deg,#ffd700,#ffed4e);
-    animation:cosmicSparkleFall 6s forwards;box-shadow:0 0 20px rgba(255,215,0,0.9);
+    animation:cosmicSparkleFall 6s forwards, sparkleTwinkle 1s infinite;
+    box-shadow:0 0 20px rgba(255,215,0,0.9);
     will-change:transform,opacity;
   }
   .emoji-float{
@@ -218,13 +258,30 @@
     background:linear-gradient(45deg,#ffd700,#ffed4e);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     filter:drop-shadow(0 0 20px rgba(255,215,0,0.9));
-    animation:cosmicEmojiRise 5s forwards;
+    animation:cosmicEmojiRise 5s forwards, emojiSpin 3s infinite;
   }
 
-  /* SMOOTH MOBILE ANIMATIONS */
+  /* SUPER CUTE ANIMATIONS */
+  @keyframes bubbleChase{0%{transform:translateX(0) translateY(0) scale(0.5);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(120vw) translateY(20vh) scale(1.2);opacity:0}}
+  @keyframes reverseBubbleChase{0%{transform:translateX(100vw) translateY(-10vh) scale(0.5);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(-20px) translateY(20vh) scale(1.2);opacity:0}}
+  
+  @keyframes heartFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}20%{opacity:1;transform:translateY(60vh) rotate(180deg)}80%{opacity:1;transform:translateY(-20vh) rotate(720deg)}100%{transform:translateY(-100vh) rotate(1080deg);opacity:0}}
+  
+  @keyframes starChase{0%{left:-30px;top:20vh;opacity:1}100%{left:110vw;top:80vh;opacity:0}}
+
+  @keyframes gemWiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
+  @keyframes textBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  @keyframes countdownWobble{0%,100%{transform:rotate(-1deg)}25%{transform:rotate(1deg)}75%{transform:rotate(-1deg)}}
+  @keyframes drumShake{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
+  @keyframes textSquish{0%,100%{transform:scale(1,1)}50%{transform:scale(1.05,0.95)}}
+  @keyframes titleCelebrate{0%,100%{transform:scale(1)}33%{transform:scale(1.05)}66%{transform:scale(1.03)}}
+  @keyframes clapBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes sparkleTwinkle{0%,100%{opacity:0.7}50%{opacity:1}}
+  @keyframes emojiSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+  /* EXISTING ANIMATIONS (keeping core ones compact) */
   @keyframes galaxyCosmicShift{0%,100%{background-position:0% 50%}50%{background-position:400% 50%}}
   @keyframes cosmicNebula{0%,100%{opacity:0.6}50%{opacity:0.9}}
-
   @keyframes orbExoticPortal{0%{opacity:0;transform:translate(-50%,-50%) scale(0)}50%{transform:translate(-50%,-50%) scale(1.02)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
   @keyframes exoticTitlePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
   @keyframes exoticSubtitleReveal{0%{opacity:0;transform:translateY(25px)}100%{opacity:1;transform:translateY(0)}}
@@ -253,6 +310,14 @@
 </style>
 </head>
 <body>
+<div class="chase-bubbles">
+  <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+  <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+</div>
+
+<div class="heart-float" id="hearts"></div>
+<div class="star-chase" id="stars"></div>
+
 <div class="stage" id="stage">
   <div class="elegant-orb" id="orb">
     <div class="orb-title" id="orbTitle">LEGENDARY BEGINNING</div>
@@ -275,7 +340,7 @@
 </div>
 
 <div class="final-popup" id="popup">
-  <div class="popup-title">INTERVIEW CONQUERED</div>
+  <div class="popup-title">INTERVIEW CONQUERED 🎉</div>
   <div class="popup-subtitle">Mr. Banker | Tanish Guleria | Future Secured on 18TH DEC 2025 ✨</div>
 </div>
 
@@ -293,24 +358,27 @@ const elements = {
   popup: document.getElementById('popup'),
   claps: document.getElementById('claps'),
   effects: document.getElementById('effects'),
-  stage: document.getElementById('stage')
+  stage: document.getElementById('stage'),
+  hearts: document.getElementById('hearts'),
+  stars: document.getElementById('stars')
 };
 
 const timeline = [
   { time: 400, action: () => elements.orb.classList.add('show') },
   { time: 3200, action: () => {
-    elements.orbTitle.textContent = 'DESTINY UNFOLDS';
-    elements.orbSubtitle.textContent = 'OF TANISH GULERIA';
+    elements.orbTitle.textContent = 'DESTINY UNFOLDS 💫';
+    elements.orbSubtitle.textContent = 'OF TANISH GULERIA ✨';
     elements.orbSubtitle.classList.add('reveal');
+    launchHearts();
   }},
   { time: 9000, action: () => {
     elements.orb.style.display = 'none';
     elements.loading.classList.add('show');
   }},
-  { time: 10600, action: () => elements.countdown.textContent = '3' },
-  { time: 11600, action: () => elements.countdown.textContent = '2' },
+  { time: 10600, action: () => elements.countdown.textContent = '3 🎯' },
+  { time: 11600, action: () => elements.countdown.textContent = '2 🔥' },
   { time: 12600, action: () => {
-    elements.countdown.textContent = '1';
+    elements.countdown.textContent = '1 🚀';
     setTimeout(() => elements.loading.style.display = 'none', 1400);
   }},
   { time: 14400, action: () => elements.drumSection.classList.add('show') },
@@ -318,11 +386,36 @@ const timeline = [
     elements.drumSection.style.display = 'none';
     elements.popup.classList.add('show');
     launchCosmicCelebration();
+    launchStars();
   }},
   { time: 25000, action: launchExoticClapApocalypse }
 ];
 
 timeline.forEach(step => setTimeout(step.action, step.time));
+
+function launchHearts() {
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerHTML = ['💖','💕','💗','💝'][Math.floor(Math.random()*4)];
+    heart.style.left = Math.random() * 100 + '%';
+    elements.hearts.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }, 800);
+}
+
+function launchStars() {
+  for(let i = 0; i < 15; i++) {
+    setTimeout(() => {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.innerHTML = ['⭐','✨','🌟'][Math.floor(Math.random()*3)];
+      star.style.top = Math.random() * 40 + '%';
+      elements.stars.appendChild(star);
+      setTimeout(() => star.remove(), 4000);
+    }, i * 200);
+  }
+}
 
 function launchCosmicCelebration() {
   for(let i = 0; i < 100; i++) {
@@ -345,7 +438,7 @@ function launchExoticClapApocalypse() {
     setTimeout(() => {
       const clapEl = document.createElement('div');
       clapEl.className = 'clap-emoji';
-      clapEl.innerHTML = '👏👏';
+      clapEl.innerHTML = '👏👏💖';
       elements.claps.appendChild(clapEl);
       setTimeout(() => clapEl.remove(), 4500);
     }, i * 110);
@@ -354,7 +447,7 @@ function launchExoticClapApocalypse() {
   setInterval(() => {
     const clapEl = document.createElement('div');
     clapEl.className = 'clap-emoji';
-    clapEl.innerHTML = '👏👏';
+    clapEl.innerHTML = '👏👏✨';
     elements.claps.appendChild(clapEl);
     setTimeout(() => clapEl.remove(), 3500);
   }, 600);

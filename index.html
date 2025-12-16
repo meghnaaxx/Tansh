@@ -166,7 +166,6 @@
 
   .drum{font-size:clamp(110px, 22vw, 180px);
     filter:drop-shadow(0 12px 30px rgba(255,215,0,0.8));
-    animation:drumShake 0.1s infinite;
     will-change:transform;
   }
   .drum.left{animation:exoticDrumHitLeft 1s infinite, drumShake 0.1s infinite;}
@@ -228,6 +227,30 @@
     will-change:transform;
   }
 
+  /* HYPE OVERLAY BEFORE CLAPS */
+  .hype-overlay{
+    position:fixed;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:12px;
+    background:radial-gradient(circle at 50% 0%, rgba(255,215,0,0.08), transparent 55%), rgba(0,0,0,0.88);
+    z-index:1800;opacity:0;pointer-events:none;
+    transition:opacity 0.5s ease;
+  }
+  .hype-overlay.show{opacity:1;}
+
+  .hype-line{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(18px,4.5vw,26px);
+    color:#fff;
+    text-align:center;
+    max-width:82%;
+    opacity:0;
+    transform:translateY(12px) scale(0.96);
+    text-shadow:0 0 20px rgba(255,215,0,0.7);
+  }
+  .hype-line.visible{
+    animation:hypeLineIn 0.7s ease-out forwards, hypeLineGlow 3s ease-in-out infinite 0.7s;
+  }
+
   /* COMPACT CLAP EXPLOSION */
   .clap-section{
     position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;
@@ -261,14 +284,13 @@
     animation:cosmicEmojiRise 5s forwards, emojiSpin 3s infinite;
   }
 
-  /* SUPER CUTE ANIMATIONS */
+  /* SUPER CUTE / CORE ANIMATIONS (unchanged list from your code) */
   @keyframes bubbleChase{0%{transform:translateX(0) translateY(0) scale(0.5);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(120vw) translateY(20vh) scale(1.2);opacity:0}}
   @keyframes reverseBubbleChase{0%{transform:translateX(100vw) translateY(-10vh) scale(0.5);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(-20px) translateY(20vh) scale(1.2);opacity:0}}
-  
-  @keyframes heartFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}20%{opacity:1;transform:translateY(60vh) rotate(180deg)}80%{opacity:1;transform:translateY(-20vh) rotate(720deg)}100%{transform:translateY(-100vh) rotate(1080deg);opacity:0}}
-  
-  @keyframes starChase{0%{left:-30px;top:20vh;opacity:1}100%{left:110vw;top:80vh;opacity:0}}
 
+  @keyframes heartFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}20%{opacity:1;transform:translateY(60vh) rotate(180deg)}80%{opacity:1;transform:translateY(-20vh) rotate(720deg)}100%{transform:translateY(-100vh) rotate(1080deg);opacity:0}}
+
+  @keyframes starChase{0%{left:-30px;top:20vh;opacity:1}100%{left:110vw;top:80vh;opacity:0}}
   @keyframes gemWiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
   @keyframes textBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
   @keyframes countdownWobble{0%,100%{transform:rotate(-1deg)}25%{transform:rotate(1deg)}75%{transform:rotate(-1deg)}}
@@ -279,7 +301,6 @@
   @keyframes sparkleTwinkle{0%,100%{opacity:0.7}50%{opacity:1}}
   @keyframes emojiSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 
-  /* EXISTING ANIMATIONS (keeping core ones compact) */
   @keyframes galaxyCosmicShift{0%,100%{background-position:0% 50%}50%{background-position:400% 50%}}
   @keyframes cosmicNebula{0%,100%{opacity:0.6}50%{opacity:0.9}}
   @keyframes orbExoticPortal{0%{opacity:0;transform:translate(-50%,-50%) scale(0)}50%{transform:translate(-50%,-50%) scale(1.02)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
@@ -296,9 +317,18 @@
   @keyframes celestialPopupReveal{0%{opacity:0;transform:translate(-50%,-50%) scale(0)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
   @keyframes celestialTitleSweep{0%{background-position:400% 0}100%{background-position:-400% 0}}
   @keyframes exoticClapExplosion{0%{opacity:0;transform:scale(0.7)}100%{opacity:1;transform:scale(1)}}
-  @keyframes exoticClapEpic{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
   @keyframes cosmicSparkleFall{0%{opacity:1;transform:translateY(-100vh)}50%{transform:translateY(0)}100%{opacity:0;transform:translateY(100vh)}}
   @keyframes cosmicEmojiRise{0%{opacity:0;transform:translateY(100vh)}50%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-100vh)}}
+
+  /* Hype specific */
+  @keyframes hypeLineIn{
+    0%{opacity:0;transform:translateY(16px) scale(0.94)}
+    100%{opacity:1;transform:translateY(0) scale(1)}
+  }
+  @keyframes hypeLineGlow{
+    0%,100%{text-shadow:0 0 18px rgba(255,215,0,0.6);transform:translateY(0) scale(1)}
+    50%{text-shadow:0 0 30px rgba(255,255,255,0.9);transform:translateY(-2px) scale(1.03)}
+  }
 
   @media (max-width:480px){
     body{padding:2px;}
@@ -310,6 +340,14 @@
 </style>
 </head>
 <body>
+
+<!-- SIMPLE AUDIO ELEMENT FOR CLAPS -->
+<audio id="clapSound" preload="auto">
+  <!-- Replace this src with your own clap mp3/ogg -->
+  <source src="https://actions.google.com/sounds/v1/impacts/medium_impact.ogg" type="audio/ogg">
+  <source src="https://actions.google.com/sounds/v1/impacts/medium_impact.ogg" type="audio/mpeg">
+</audio>
+
 <div class="chase-bubbles">
   <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
   <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
@@ -344,6 +382,13 @@
   <div class="popup-subtitle">Mr. Banker | Tanish Guleria | Future Secured on 18TH DEC 2025 ✨</div>
 </div>
 
+<!-- HYPE OVERLAY BEFORE CLAPS -->
+<div class="hype-overlay" id="hypeOverlay">
+  <div class="hype-line" id="hype1">This man is unstoppable...</div>
+  <div class="hype-line" id="hype2">The future banker is here...</div>
+  <div class="hype-line" id="hype3">Everyone clap for TANISH! 🥹👏</div>
+</div>
+
 <div class="clap-section" id="claps"></div>
 <div class="effects" id="effects"></div>
 
@@ -360,7 +405,12 @@ const elements = {
   effects: document.getElementById('effects'),
   stage: document.getElementById('stage'),
   hearts: document.getElementById('hearts'),
-  stars: document.getElementById('stars')
+  stars: document.getElementById('stars'),
+  hypeOverlay: document.getElementById('hypeOverlay'),
+  hype1: document.getElementById('hype1'),
+  hype2: document.getElementById('hype2'),
+  hype3: document.getElementById('hype3'),
+  clapSound: document.getElementById('clapSound')
 };
 
 const timeline = [
@@ -388,7 +438,9 @@ const timeline = [
     launchCosmicCelebration();
     launchStars();
   }},
-  { time: 25000, action: launchExoticClapApocalypse }
+  // Hype sequence before claps
+  { time: 23500, action: showHypeLines },
+  { time: 29000, action: launchExoticClapApocalypse }
 ];
 
 timeline.forEach(step => setTimeout(step.action, step.time));
@@ -427,6 +479,31 @@ function launchCosmicCelebration() {
   }
 }
 
+/* HYPE LINES LOGIC */
+function showHypeLines() {
+  elements.hypeOverlay.classList.add('show');
+
+  setTimeout(() => elements.hype1.classList.add('visible'), 200);
+  setTimeout(() => elements.hype2.classList.add('visible'), 1400);
+  setTimeout(() => elements.hype3.classList.add('visible'), 2600);
+
+  // fade overlay a bit before claps start
+  setTimeout(() => {
+    elements.hypeOverlay.classList.remove('show');
+  }, 5200);
+}
+
+/* CLAP APOCALYPSE WITH SOUND */
+function playClapSound() {
+  if (!elements.clapSound) return;
+  try {
+    // cloneNode to allow overlapping claps
+    const clone = elements.clapSound.cloneNode(true);
+    clone.volume = 0.7;
+    clone.play().catch(()=>{});
+  } catch(e){}
+}
+
 function launchExoticClapApocalypse() {
   elements.stage.style.display = 'none';
   elements.popup.style.display = 'none';
@@ -440,6 +517,7 @@ function launchExoticClapApocalypse() {
       clapEl.className = 'clap-emoji';
       clapEl.innerHTML = '👏👏💖';
       elements.claps.appendChild(clapEl);
+      playClapSound();              // sound for burst claps
       setTimeout(() => clapEl.remove(), 4500);
     }, i * 110);
   }
@@ -449,10 +527,12 @@ function launchExoticClapApocalypse() {
     clapEl.className = 'clap-emoji';
     clapEl.innerHTML = '👏👏✨';
     elements.claps.appendChild(clapEl);
+    playClapSound();                // sound for continuous claps
     setTimeout(() => clapEl.remove(), 3500);
   }, 600);
 }
 
+/* EFFECT HELPERS */
 function createCosmicSparkle() {
   const sparkle = document.createElement('div');
   sparkle.className = 'sparkle';
